@@ -21,11 +21,7 @@ contract Main{
         bookNum["BlockChain"] = 1;
     }
 
-<<<<<<< HEAD
     function makeRecord(uint256 year,uint256 month, uint256 day, string memory title, uint Type) public {
-=======
-     function makeRecord(uint256 year,uint256 month, uint256 day, string memory title, uint Type) public {
->>>>>>> 465177ca89e8116e382d4b5d34be9726f70a0588
         record.Title = title;
         record.Year = year;
         record.Month = month;
@@ -54,8 +50,4 @@ contract Main{
         }
         
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 465177ca89e8116e382d4b5d34be9726f70a0588
