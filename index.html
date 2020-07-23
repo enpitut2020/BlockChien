@@ -129,7 +129,8 @@
             var title = Borrow_form.textbox.value;  //テキストエリアの値を取得
             if (title == "") { alert("借りる本のタイトルを入力してください。"); }
             else { alert("" + "(" + title + ")" + "を借ります。"); }
-
+            
+            // sendだと
             mainContract.methods.borrowBook(title).call({
                 from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
             }).then(function (receipt) {
