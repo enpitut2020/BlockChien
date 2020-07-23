@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>図書館貸し出しサービス</title>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.8/dist/web3.min.js"></script>
+<script type="text/javascript">
+    function Borrow(){
+        var hoge = Borrow_form.textbox.value;  //テキストエリアの値を取得
+        if(hoge == "") { alert("借りる本のタイトルを入力してください。"); }
+        else { alert("" + "(" + hoge + ")" + "を借ります。"); }
+    }
+    function ReturnBook(){
+        var fuga = Return_form.textbox.value;  //テキストエリアの値を取得
+        if(fuga == "") { alert("返す本のタイトルを入力してください。"); }
+        else { alert("" + "(" + fuga + ")" + "を返します。"); }
+    }
+</script>
+</head>
+
+<body>
+<form name="Borrow_form" action="Borrow.html">
+<input type="text" name="textbox">
+<input type="button" value="借りる" onclick="Borrow()">
+</form>
+
+<form name="Return_form" action="Borrow.html">
+<input type="text" name="textbox">
+<input type="button" value="返す" onclick="ReturnBook()">
+</form>
+
+</body>
+</html>
