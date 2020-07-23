@@ -1,33 +1,166 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="utf-8">
-<title>図書館貸し出しサービス</title>
-<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.8/dist/web3.min.js"></script>
-<script type="text/javascript">
-    function Borrow(){
-        var hoge = Borrow_form.textbox.value;  //テキストエリアの値を取得
-        if(hoge == "") { alert("借りる本のタイトルを入力してください。"); }
-        else { alert("" + "(" + hoge + ")" + "を借ります。"); }
-    }
-    function ReturnBook(){
-        var fuga = Return_form.textbox.value;  //テキストエリアの値を取得
-        if(fuga == "") { alert("返す本のタイトルを入力してください。"); }
-        else { alert("" + "(" + fuga + ")" + "を返します。"); }
-    }
-</script>
+    <meta charset="utf-8">
+    <title>図書館貸し出しサービス</title>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.8/dist/web3.min.js"></script>
+    <script type="text/javascript">
+        // let web3 = new Web3(new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/c16c6f2b531b43c9a92dd95fe5eac2b5"));
+
+
+
+        // const ethEnabled = () => {
+        //     if (window.ethereum) {
+        //         window.web3 = new Web3(window.ethereum);
+        //         window.ethereum.enable();
+        //         return true;
+        //     }
+        //     return false;
+        // }
+
+        // if (ethEnabled()) {
+        //     console.log("true");
+        // }
+        // else {
+        //     console.log("false");
+        // }
+
+        ethereum.request({ method: 'eth_requestAccounts' });
+        const ethEnabled = () => {
+            if (window.ethereum) {
+                window.web3 = new Web3(window.ethereum);
+                window.ethereum.enable();
+                return true;
+            }
+            return false;
+        }
+        if (ethEnabled()) {
+            console.log("true");
+        }
+
+        let mainContract = new window.web3.eth.Contract([
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "book",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "returnBook",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "name": "bookNum",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "book",
+                        "type": "string"
+                    }
+                ],
+                "name": "borrowBook",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "userBook",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ], "0xb4aA257fe43c13afC0C10d6cb6e4E7160A3BF78D");
+
+
+
+        function Borrow() {
+            var title = Borrow_form.textbox.value;  //テキストエリアの値を取得
+            if (title == "") { alert("借りる本のタイトルを入力してください。"); }
+            else { alert("" + "(" + title + ")" + "を借ります。"); }
+
+            mainContract.methods.borrowBook(title).call({
+                from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
+            }).then(function (receipt) {
+                console.log(receipt);
+            });
+        }
+        function ReturnBook() {
+            var title = Return_form.textbox.value;  //テキストエリアの値を取得
+            if (title == "") { alert("返す本のタイトルを入力してください。"); }
+            else { alert("" + "(" + title + ")" + "を返します。"); }
+
+            mainContract.methods.returnBook(title).send({
+                from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
+            }).then(function (receipt) {
+                console.log(receipt);
+            });
+        }
+    </script>
 </head>
 
 <body>
-<form name="Borrow_form" action="Borrow.html">
-<input type="text" name="textbox">
-<input type="button" value="借りる" onclick="Borrow()">
-</form>
+    <form name="Borrow_form" action="">
+        <input type="text" name="textbox">
+        <input type="button" value="借りる" onclick="Borrow()">
+    </form>
 
-<form name="Return_form" action="Borrow.html">
-<input type="text" name="textbox">
-<input type="button" value="返す" onclick="ReturnBook()">
-</form>
+    <form name="Return_form" action="">
+        <input type="text" name="textbox">
+        <input type="button" value="返す" onclick="ReturnBook()">
+    </form>
 
 </body>
+
 </html>
