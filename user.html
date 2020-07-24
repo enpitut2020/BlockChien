@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>図書館貸し出しサービス</title>
+    <!-- import bootstrap4 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -15,6 +16,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
+
+    <!-- import web3js -->
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.8/dist/web3.min.js"></script>
 
     <!-- import React -->
@@ -65,9 +68,9 @@
             {
                 "inputs": [
                     {
-                        "internalType": "string",
+                        "internalType": "String",
                         "name": "",
-                        "type": "string"
+                        "type": "String"
                     }
                 ],
                 "name": "bookNum",
@@ -84,9 +87,9 @@
             {
                 "inputs": [
                     {
-                        "internalType": "string",
+                        "internalType": "String",
                         "name": "book",
-                        "type": "string"
+                        "type": "String"
                     }
                 ],
                 "name": "borrowBook",
@@ -150,33 +153,187 @@
 
     <script type="text/babel">
         function getUserInfo() {
-            const element = (
-                <div>
-                    <h1>Hello, world!</h1>
-                </div>
+            let usrHistory = [{
+                "title": "BlockChain",
+                "reservedNum": 3,
+                "begin": {
+                    "year": 2020,
+                    "month": 7,
+                    "day": 14
+                },
+                "end": {
+                    "year": 2020
+
+                    ,
+                    "month": 7,
+                    "day": 28
+                }
+            }, {
+                "title": "Mastering Ethereum",
+                "reservedNum": 1,
+                "begin": {
+                    "year": 2020,
+                    "month": 7,
+                    "day": 16
+                },
+                "end": {
+                    "year": 2020,
+                    "month": 7,
+                    "day": 30
+                }
+            }];
+
+            let usrRevervation = [{
+                "title": "Cooking for Geeks",
+                "reservedNum": 3,
+                "begin": {
+                    "year": 2020,
+                    "month": 7,
+                    "day": 16
+                },
+                "end": {
+                    "year": 2020,
+                    "month": 7,
+                    "day": 30
+                }
+            }, {
+                "title": "アジャイルサムライ-達人開発者への道-",
+                "reservedNum": 3,
+                "begin": {
+                    "year": 2020,
+                    "month": 7,
+                    "day": 16
+                },
+                "end": {
+                    "year": 2020,
+                    "month": 7,
+                    "day": 30
+                }
+            }];
+
+            let usrRecords = usrHistory.map((n) => {
+                return (
+                    <tr>
+                        <th>{n.title}</th>
+                        <th>{String(n.reservedNum) + "人"}</th>
+                        <th>{String(n.begin.year) + "年" + String(n.begin.month) + "月" + String(n.begin.day) + "日"}</th>
+                        <th>{String(n.end.year) + "年" + String(n.end.month) + "月" + String(n.end.day) + "日"}</th>
+                    </tr>
+                );
+            })
+
+            let historyRecords = usrRevervation.map((n) => {
+                return (
+                    <tr>
+                        <th>{n.title}</th>
+                        <th>{String(n.reservedNum) + "人"}</th>
+                        <th>{String(n.begin.year) + "年" + String(n.begin.month) + "月" + String(n.begin.day) + "日"}</th>
+                        <th>{String(n.end.year) + "年" + String(n.end.month) + "月" + String(n.end.day) + "日"}</th>
+                    </tr>
+                );
+            })
+
+            const tableTitle1 = (
+                <table class="table">
+                    <thead class="thead-lignt">
+                        <h3></h3>
+                        <tr>
+                            <th>タイトル</th>
+                            <th>予約人数</th>
+                            <th>貸し出し日時</th>
+                            <th>返却期限</th>
+                        </tr>
+                    </thead>
+                </table>
             );
+
+            const tableTitle2 = (
+                <table class="table">
+                    <thead class="thead-lignt">
+                        <tr>
+                            <th>タイトル</th>
+                            <th>予約人数</th>
+                            <th>受け取り日時</th>
+                            <th>返却期限</th>
+                        </tr>
+                    </thead>
+                </table>
+            );
+
+            const element = (
+                <table class="table">
+                    <thead class="thead-lignt">
+                        <tr>
+                            <th>タイトル</th>
+                            <th>予約人数</th>
+                            <th>貸し出し日時</th>
+                            <th>返却期限</th>
+                        </tr>
+                    </thead>
+                    {usrRecords}
+                </table>
+            );
+
+
+            const element2 = (
+                <table class="table">
+                    <thead class="thead-lignt">
+                        <tr>
+                            <th>タイトル</th>
+                            <th>予約人数</th>
+                            <th>受け取り日時</th>
+                            <th>返却期限</th>
+                        </tr>
+                    </thead>
+                    {historyRecords}
+                </table>
+            );
+
+
+
             let usrAddress = document.getElementById('usrAddress');
             //alert(usrAddress.name);
             if (usrAddress.value == "100") {
-                alert("hoge");
-                ReactDOM.render(element, document.getElementById('root'));
+                //alert("hoge");
+
+                ReactDOM.render(element, document.getElementById('home'));
+                ReactDOM.render(element2, document.getElementById('reserve'));
+            }
+            else {
+                ReactDOM.render(tableTitle1, document.getElementById('home'));
+                ReactDOM.render(tableTitle2, document.getElementById('reserve'));
+
             }
         }
 
-        function getBookInfo(title) {
+        function getBookInfo() {
 
             let bookInfo = [{ "reservationNum": 10 }];
 
-            const element = (
-                <div>
-                    <h1>Hello, world!</h1>
-                    <h2> {new Date().toLocaleTimeString()}.</h2>
-                </div>
-            );
-            ReactDOM.render(
-                element,
-                document.getElementById('example')
-            );
+            //for(book of bookInfo)
+
+            // const element = (
+
+            //     <table class="table">
+            //         <thead class="thead-lignt">
+            //             <tr>
+            //                 <th>タイトル</th>
+            //                 <th>予約人数</th>
+            //                 <th>返却期限</th>
+            //             </tr>
+            //         </thead>
+            //         <tr>
+            //             <th>BlockChain</th>
+            //             <th>3人</th>
+            //             <th>7月28日</th>
+            //         </tr>
+            //     </table>
+
+            // );
+            // ReactDOM.render(
+            //     element,
+            //     document.getElementById('menu1')
+            // );
 
         }
     </script>
@@ -185,7 +342,7 @@
 <body>
     <div class="container">
         <div class="jumbotron">
-            <h1>BlockChien</h1>
+            <h1>ぶろっくちえん</h1>
             <p>次世代図書館</p>
         </div>
     </div>
@@ -217,7 +374,7 @@
             </div>
         </div>
     </div>
-    h
+
     <div class="container">
         <br>
         <!-- Nav pills -->
@@ -226,49 +383,30 @@
                 <a class="nav-link active" data-toggle="pill" href="#home">履歴</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="pill" href="#menu1">予約リスト</a>
+                <a class="nav-link" data-toggle="pill" href="#reserve">予約リスト</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" data-toggle="pill" href="#menu2">Menu 2</a>
-            </li>
+            </li> -->
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
             <div id="home" class="container tab-pane active"><br>
-                <h3>自分の貸し出し履歴</h3>
                 <table class="table">
                     <thead class="thead-lignt">
                         <tr>
                             <th>タイトル</th>
                             <th>予約人数</th>
-                            <th>返却期限
+                            <th>貸し出し日時</th>
+                            <th>返却期限</th>
                         </tr>
                     </thead>
-                    <tr>
-                        <th>BlockChain</th>
-                        <th>3人</th>
-                        <th>7月28日</th>
-                    </tr>
                 </table>
             </div>
-            <!-- <div id="menu1" class="container tab-pane fade"><br>
-                <h3>予約してる本リスト</h3>
-                <table class="table">
-                    <thead class="thead-lignt">
-                        <tr>
-                            <th>タイトル</th>
-                            <th>予約人数</th>
-                            <th>返却期限
-                        </tr>
-                    </thead>
-                    <tr>
-                        <th>BlockChain</th>
-                        <th>3人</th>
-                        <th>7月28日</th>
-                    </tr>
-                </table>
-            </div> -->
+            <div id="reserve" class="container tab-pane fade"><br>
+
+            </div>
             <div id="menu2" class="container tab-pane fade"><br>
                 <h3>Menu 2</h3>
                 <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
