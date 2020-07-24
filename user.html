@@ -16,6 +16,12 @@
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.8/dist/web3.min.js"></script>
+
+    <!-- import React -->
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+
     <script type="text/javascript">
 
         ethereum.request({ method: 'eth_requestAccounts' });
@@ -116,7 +122,7 @@
         ], "0xb4aA257fe43c13afC0C10d6cb6e4E7160A3BF78D");
 
         function Borrow() {
-            var title = Borrow_form.textbox.value;  //テキストエリアの値を取得
+            let title = Borrow_form.textbox.value;  //テキストエリアの値を取得
             if (title == "") { alert("借りる本のタイトルを入力してください。"); }
             else { alert("" + "(" + title + ")" + "を借ります。"); }
 
@@ -127,8 +133,9 @@
                 console.log(receipt);
             });
         }
+
         function ReturnBook() {
-            var title = Return_form.textbox.value;  //テキストエリアの値を取得
+            let title = Return_form.textbox.value;  //テキストエリアの値を取得
             if (title == "") { alert("返す本のタイトルを入力してください。"); }
             else { alert("" + "(" + title + ")" + "を返します。"); }
 
@@ -139,14 +146,39 @@
             });
         }
     </script>
-    <script type="text/javascript">
-    /*
-        funntion getUserInfo() {
-            var addresss = 
 
+
+    <script type="text/babel">
+        function getUserInfo() {
+            const element = (
+                <div>
+                    <h1>Hello, world!</h1>
+                </div>
+            );
+            let usrAddress = document.getElementById('usrAddress');
+            //alert(usrAddress.name);
+            if (usrAddress.value == "100") {
+                alert("hoge");
+                ReactDOM.render(element, document.getElementById('root'));
+            }
+        }
+
+        function getBookInfo(title) {
+
+            let bookInfo = [{ "reservationNum": 10 }];
+
+            const element = (
+                <div>
+                    <h1>Hello, world!</h1>
+                    <h2> {new Date().toLocaleTimeString()}.</h2>
+                </div>
+            );
+            ReactDOM.render(
+                element,
+                document.getElementById('example')
+            );
 
         }
-        */
     </script>
 </head>
 
@@ -163,11 +195,11 @@
         <div class="row">
             <div class="col-md">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="アドレス" id="usr" name="username">
+                    <input type="text" class="form-control" placeholder="アドレス" id="usrAddress" name="username">
                 </div>
             </div>
             <div class="col-md">
-                <button type="submit" class="btn btn-primary">ログイン</button>
+                <button type="submit" class="btn btn-primary" onclick="getUserInfo()">ログイン</button>
             </div>
         </div>
     </div>
@@ -181,52 +213,70 @@
                 </div>
             </div>
             <div class="col-md">
-                <button type="submit" class="btn btn-primary" onclick="getUserInfo()">検索</button>
+                <button type="submit" class="btn btn-primary">検索</button>
             </div>
         </div>
     </div>
-
+    h
     <div class="container">
         <br>
         <!-- Nav pills -->
         <ul class="nav nav-pills" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="pill" href="#home">履歴</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="pill" href="#menu1">予約リスト</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="pill" href="#menu2">Menu 2</a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="pill" href="#home">履歴</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#menu1">予約リスト</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#menu2">Menu 2</a>
+            </li>
         </ul>
-      
+
         <!-- Tab panes -->
         <div class="tab-content">
-          <div id="home" class="container tab-pane active"><br>
-            <h3>自分の貸し出し履歴</h3>
-            <table class="table">
-                <thead class="thead-lignt">
-                    <tr><th>タイトル</th><th>予約人数</th><th>返却期限</tr>
-                </thead>
-                <tr><th>BlockChain</th><th>3人</th><th>7月28日</th></tr>
-            </table>
-          </div>
-          <div id="menu1" class="container tab-pane fade"><br>
-            <h3>予約してる本リスト</h3>
-            <table class="table">
-                <thead class="thead-lignt">
-                    <tr><th>タイトル</th><th>予約人数</th><th>返却期限</tr>
-                </thead>
-                <tr><th>BlockChain</th><th>3人</th><th>7月28日</th></tr>
-            </table>
-          </div>
-          <div id="menu2" class="container tab-pane fade"><br>
-            <h3>Menu 2</h3>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-          </div>
+            <div id="home" class="container tab-pane active"><br>
+                <h3>自分の貸し出し履歴</h3>
+                <table class="table">
+                    <thead class="thead-lignt">
+                        <tr>
+                            <th>タイトル</th>
+                            <th>予約人数</th>
+                            <th>返却期限
+                        </tr>
+                    </thead>
+                    <tr>
+                        <th>BlockChain</th>
+                        <th>3人</th>
+                        <th>7月28日</th>
+                    </tr>
+                </table>
+            </div>
+            <!-- <div id="menu1" class="container tab-pane fade"><br>
+                <h3>予約してる本リスト</h3>
+                <table class="table">
+                    <thead class="thead-lignt">
+                        <tr>
+                            <th>タイトル</th>
+                            <th>予約人数</th>
+                            <th>返却期限
+                        </tr>
+                    </thead>
+                    <tr>
+                        <th>BlockChain</th>
+                        <th>3人</th>
+                        <th>7月28日</th>
+                    </tr>
+                </table>
+            </div> -->
+            <div id="menu2" class="container tab-pane fade"><br>
+                <h3>Menu 2</h3>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+                    totam rem aperiam.</p>
+            </div>
         </div>
-      </div>
+    </div>
+    <div id="root"></div>
     <!-- end -->
 
 
