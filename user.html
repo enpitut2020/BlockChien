@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>図書館貸し出しサービス</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.8/dist/web3.min.js"></script>
+    <script type="text/javascript">
+
+        ethereum.request({ method: 'eth_requestAccounts' });
+        const ethEnabled = () => {
+            if (window.ethereum) {
+                window.web3 = new Web3(window.ethereum);
+                window.ethereum.enable();
+                return true;
+            }
+            return false;
+        }
+        if (ethEnabled()) {
+            console.log("true");
+        }
+
+        let mainContract = new window.web3.eth.Contract([
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "book",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "returnBook",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "name": "bookNum",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "book",
+                        "type": "string"
+                    }
+                ],
+                "name": "borrowBook",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "userBook",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ], "0xb4aA257fe43c13afC0C10d6cb6e4E7160A3BF78D");
+
+        function Borrow() {
+            var title = Borrow_form.textbox.value;  //テキストエリアの値を取得
+            if (title == "") { alert("借りる本のタイトルを入力してください。"); }
+            else { alert("" + "(" + title + ")" + "を借ります。"); }
+
+            // sendだと
+            mainContract.methods.borrowBook(title).call({
+                from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
+            }).then(function (receipt) {
+                console.log(receipt);
+            });
+        }
+        function ReturnBook() {
+            var title = Return_form.textbox.value;  //テキストエリアの値を取得
+            if (title == "") { alert("返す本のタイトルを入力してください。"); }
+            else { alert("" + "(" + title + ")" + "を返します。"); }
+
+            mainContract.methods.returnBook(title).send({
+                from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
+            }).then(function (receipt) {
+                console.log(receipt);
+            });
+        }
+    </script>
+    <script type="text/javascript">
+    /*
+        funntion getUserInfo() {
+            var addresss = 
+
+
+        }
+        */
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>BlockChien</h1>
+            <p>次世代図書館</p>
+        </div>
+    </div>
+
+    <!-- Search & Reservation -->
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="アドレス" id="usr" name="username">
+                </div>
+            </div>
+            <div class="col-md">
+                <button type="submit" class="btn btn-primary">ログイン</button>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
+    <!-- User Address -->
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="タイトル" id="usr" name="username">
+                </div>
+            </div>
+            <div class="col-md">
+                <button type="submit" class="btn btn-primary" onclick="getUserInfo()">検索</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <br>
+        <!-- Nav pills -->
+        <ul class="nav nav-pills" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="pill" href="#home">履歴</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#menu1">予約リスト</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="pill" href="#menu2">Menu 2</a>
+          </li>
+        </ul>
+      
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div id="home" class="container tab-pane active"><br>
+            <h3>自分の貸し出し履歴</h3>
+            <table class="table">
+                <thead class="thead-lignt">
+                    <tr><th>タイトル</th><th>予約人数</th><th>返却期限</tr>
+                </thead>
+                <tr><th>BlockChain</th><th>3人</th><th>7月28日</th></tr>
+            </table>
+          </div>
+          <div id="menu1" class="container tab-pane fade"><br>
+            <h3>予約してる本リスト</h3>
+            <table class="table">
+                <thead class="thead-lignt">
+                    <tr><th>タイトル</th><th>予約人数</th><th>返却期限</tr>
+                </thead>
+                <tr><th>BlockChain</th><th>3人</th><th>7月28日</th></tr>
+            </table>
+          </div>
+          <div id="menu2" class="container tab-pane fade"><br>
+            <h3>Menu 2</h3>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+          </div>
+        </div>
+      </div>
+    <!-- end -->
+
+
+    <!--
+    <form name="Borrow_form" action="">
+        <input type="text" name="textbox">
+        <input type="button" value="借りる" onclick="Borrow()">
+    </form>
+
+    <form name="Return_form" action="">
+        <input type="text" name="textbox">
+        <input type="button" value="返す" onclick="ReturnBook()">
+    </form>
+    --->
+
+</body>
+
+</html>
