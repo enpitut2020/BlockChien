@@ -27,12 +27,54 @@
 
     <script>
         window.onload = function () {
-            const ethereumButton = document.querySelector('.enableEthereumButton');
+            let currentAccount = null;
+            const ethereumButton = document.getElementById('enableEthereumButton');
+
+            // ethereumButton.addEventListener('click', () => {
+            //     //Will Start the metamask extension
+            //     ethereum.request({ method: 'eth_requestAccounts' });
+            // });
 
             ethereumButton.addEventListener('click', () => {
                 //Will Start the metamask extension
-                ethereum.request({ method: 'eth_requestAccounts' });
+                ethereum.request({ method: 'eth_requestAccounts' })
+                    .then(handleAccountsChanged)
+                    .catch((error) => {
+                        console.log("hoge.hoge.");
+                        if (error.code === 4001) {
+                            // EIP-1193 userRejectedRequest error
+                            console.log('Please connect to MetaMask.');
+                            document.getElementById("errMsg").className = "alert alert-danger";
+                            document.getElementById("error").innerText = "ログインに失敗しました。"
+
+                        } else {
+                            console.error(error);
+                        }
+                    });
             });
+
+            function handleAccountsChanged(accounts) {
+
+                if (accounts.length === 0) {
+
+                    // MetaMask is locked or the user has not connected any accounts
+                    console.log('Please connect to MetaMask.');
+                    document.getElementById("errMsg").className = "alert alert-danger";
+                    document.getElementById("error").innerText = "ログインに失敗しました。"
+                    return;
+
+                } else if (accounts[0] !== currentAccount) {
+
+                    currentAccount = accounts[0]
+                    // Run any other necessary logic...
+                }
+
+                //jump
+                window.location.href = 'user.html'; // 通常の遷移
+                //window.open('パス名', '_blank'); // 新しいタブを開き、ページを表示
+            }
+
+
         }
     </script>
 </head>
@@ -49,15 +91,10 @@
     <div class="container mt-3">
         <div class="row">
             <div class="col-md">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="アドレス" id="usrAddress" name="username">
+                <button id="enableEthereumButton" class="btn btn-primary">ログイン</button>
+                <div id="errMsg">
+                    <strong id="error"></strong>
                 </div>
-            </div>
-            <div class="col-md">
-
-                <button class="enableEthereumButton">Enable Ethereum</button>
-                    
-                <button type="submit" class="btn btn-primary" onclick="getUserInfo()">ログイン</button>
             </div>
         </div>
     </div>
