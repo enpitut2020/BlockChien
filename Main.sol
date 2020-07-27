@@ -51,21 +51,26 @@ contract Main{
     int256 P = 100;//ポイント初期値 
     address lib = address(0xfbE00a15070cdF61B86098e651f053655292b424);
 
+    function random(uint256 num, uint seed) private view returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(block.timestamp, seed)))%num;
+   }
+
     constructor () public {
             address nouser = address(0x0);
-            string[17] memory book_name = ["BlockChain", "Cooking for Geek","GitHub 入門","Mastering Ethere","TOEIC 公式","Cooking for Geek","徹底演習",
-                                    "ニューラルネットワーク","dapp & ゲーム","dapp & ゲーム","画像認識","やさしいC++","機械学習","応用情報","algorithm","ぴえん。","Toefl"];
+            string[16] memory book_name = ["BlockChain", "Cooking for Geek","GitHub 入門","Mastering Ethere","TOEIC 公式","Cooking for Geek","徹底演習",
+                                    "ニューラルネットワーク","dapp & ゲーム","画像認識","やさしいC++","機械学習","応用情報","algorithm","ぴえん。","Toefl"];
             uint256[] memory friend;
             for (uint i = 0; i < 8; i++) {
                 Date memory borrow_d = Date(2020, 7, 24);
                 Date memory return_d = Date(2020, 7, 26);
-                booklist.push(Book(nouser,i,book_name[i],0,1,6,100,block.timestamp - 2 days,block.timestamp,friend,borrow_d,return_d));
+                booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 2 days,block.timestamp,friend,borrow_d,return_d));
+                //title_search[book_name[i]] = i;
             }//18469(2020/7/26)
             for (uint i = 8; i < 16; i++) {
                 Date memory borrow_d = Date(2020, 7, 24);
                 Date memory return_d = Date(2020, 7, 25);
-                booklist.push(Book(nouser,i,book_name[i],0,1,3,100,block.timestamp - 2 days,block.timestamp - 3 days,friend,borrow_d,return_d));
-
+                booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 2 days,block.timestamp - 3 days,friend,borrow_d,return_d));
+                //title_search[book_name[i]] = i;
             }
             
              /*booklist.push(Book(nouser,0,"BlockChain",0,1,6,100,Date(2020,7,24),friend));
@@ -101,6 +106,7 @@ contract Main{
     }
     
     mapping(uint256 => address) public userBook; //本(固有番号)　=> ユーザー
+    //mapping(string => uint256) public title_search;//本のタイトル　=> 本(固有番号)
 /*
     function returnBook(uint256 num) view public {
         require(num < booklist.length);
@@ -219,6 +225,14 @@ contract Main{
     function withdraw() public {
         if (msg.sender == lib)
         msg.sender.transfer(address(this).balance);
+    }
+
+    function search(string memory title) public view returns (Book memory){
+        //Book[] memory list;
+        for(uint256 i = 0; i < booklist.length; i++){
+           if(keccak256(abi.encodePacked(booklist[i].name)) == keccak256(abi.encodePacked((title)))) return booklist[i];
+        }
+        
     }
 }
 
