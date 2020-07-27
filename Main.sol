@@ -49,6 +49,7 @@ contract Main{
     Student[] studentlist;
     mapping(address => uint) public students; // 利用者のアドレス -> studentlistのインデックス
     int256 P = 100;//ポイント初期値 
+    address lib = address(0xfbE00a15070cdF61B86098e651f053655292b424);
 
     constructor () public {
             address nouser = address(0x0);
@@ -74,12 +75,13 @@ contract Main{
              
         uint256[] memory a;
         
-        address[5] memory member = [address(0x5718bB3653623219e49609E355F4F60369F73cD3),//(図書館)
+        address[6] memory member = [lib,//(図書館)
                             address(0xAbf977caE05A77D85577d58fE03D19639849ea01),//(及川)
                             address(0x324bAF512Ffc6f37D91F9fE3F3464a7eA792AaeF),//(XU KAIWEN)
                             address(0xEd8e2574FA50244c5bE1e1b4c58892e3ad0FcBFa),//(菊地)
-                            address(0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A)];//金
-        string[5] memory member_name = ["図書館","及川","XU KAIWEN","菊地","金"];
+                            address(0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A),//金
+                            address(0xaf4a4BA302A069dF4ffDDdEc73A8957580747462)];//発表
+        string[6] memory member_name = ["図書館","及川","XU KAIWEN","菊地","金","発表"];
         for (uint i = 0; i < member.length; i++) {
             studentlist.push(Student(member[i], 1111111*(i+1), member_name[i], P, a, a, today()-1));
             for(uint256 j = 8; j < 12; j++){
@@ -180,24 +182,22 @@ contract Main{
         return block.timestamp / 1 days;
     }
 
-    function update() public returns (bool) {
+    function update() public {
         uint256 stu = students[msg.sender];
         // 日付が変わっていれば、使用値とチェック日付をリセットする
         uint256 tod = today();
-        if (tod > studentlist[stu].lastDay) {
-            //ポイント更新
-            for(uint256 i = 0; i < studentlist[stu].borrowed_book.length; i++){
-                if(booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days < tod){
-                    studentlist[stu].point -= (int)(tod - (booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days)) * 10;
-                    //break;
+        if (tod > studentlist[stu].lastDay) { // 更新してるかどうか
+            //ポイント更新　延滞テェック
+            for(uint256 i = 0; i < studentlist[stu].borrowed_book.length; i++){ 
+                if(booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days < tod){ // 返却日を過ぎてる
+                    //studentlist[stu].point -= (int)(tod - (booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days)) * 10;
+                    studentlist[stu].point -= (int)(tod - studentlist[stu].lastDay) * 10;
                 }
             }
-            if (studentlist[stu].point > 0) studentlist[stu].point++;
+            if (studentlist[stu].point > 0) studentlist[stu].point++; // ログインボーナス
             studentlist[stu].lastDay = tod;//最終更新日を更新
         }
     }
-
-    address lib = address(0x5718bB3653623219e49609E355F4F60369F73cD3);
 
     function pay() public payable {//0.0000001ethで1ポイント回復
         //address payable lib = (address,payable)(0x5718bB3653623219e49609E355F4F60369F73cD3);
