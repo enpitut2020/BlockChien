@@ -24,6 +24,12 @@ contract Main{
         Date Rdate;
     }
 
+    struct Record{
+        Date date;
+        int point;
+        string explanation;
+    }
+
     struct Student{
         address User;
         uint num;//学籍番号
@@ -32,18 +38,8 @@ contract Main{
         uint256[] borrowed_book; //固有番号 貸し出し履歴
         uint256[] reserved_book; //固有番号　予約リスト
         uint256 lastDay; // 最終更新日
+        Record[] rec;
     }
-    /*
-    struct Record{
-        address User;
-        string Title;
-        uint256 Type; //0:返却する　1:借りる
-        uint256 Year;
-        uint256 Month;
-        uint256 Day;
-        bool isReturned; // 返却済みならtrue,履歴の表示で過去のものを表示しないため
-    }
-    */
 
     Book[] booklist;//index:固有番号
     Student[] studentlist;
@@ -72,7 +68,6 @@ contract Main{
                 booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 2 days,block.timestamp - 3 days,friend,borrow_d,return_d));
                 //title_search[book_name[i]] = i;
             }
-            
              /*booklist.push(Book(nouser,0,"BlockChain",0,1,6,100,Date(2020,7,24),friend));
              booklist.push(Book(nouser,1,"Cooking for Geek",0,1,3,100,Date(2020,6,29),friend));
              booklist.push(Book(nouser,2,"GitHub 入門",0,1,7,100,Date(2020,6,18),friend));
@@ -87,22 +82,20 @@ contract Main{
                             address(0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A),//金
                             address(0xaf4a4BA302A069dF4ffDDdEc73A8957580747462)];//発表
         string[6] memory member_name = ["図書館","及川","XU KAIWEN","菊地","金","発表"];
+        Record[] memory rec;
         for (uint i = 0; i < member.length; i++) {
-            studentlist.push(Student(member[i], 1111111*(i+1), member_name[i], P, a, a, today()-1));
+            studentlist.push(Student(member[i], 1111111*(i+1), member_name[i], P, a, a, today()-1,rec));
             for(uint256 j = 8; j < 12; j++){
                 studentlist[i].borrowed_book.push(j);
             }
             for(uint256 j = 4; j < 8; j++){
                 studentlist[i].reserved_book.push(j);
             }
+            studentlist[i].rec.push(Record(Date(2020, 7, 27), 10, "初期ポイント"));
             students[member[i]] = i;
         }
         // studentlist.push(Student(oikawa, 1111111, "A", P, a, a, today()));
         // studentlist.push(Student(address(0x321), 2222222, "B", P, a, a, today()));
-    
-        // 0xAbf977caE05A77D85577d58fE03D19639849ea01(及川)
-        // 0x5718bB3653623219e49609E355F4F60369F73cD3(今川)
-        // 0x324bAF512Ffc6f37D91F9fE3F3464a7eA792AaeF(XU KAIWEN)
     }
     
     mapping(uint256 => address) public userBook; //本(固有番号)　=> ユーザー
@@ -117,6 +110,7 @@ contract Main{
         }
     }
 */
+
 
     function borrowBook(uint256 num) public {
         require(num < booklist.length);
@@ -141,38 +135,6 @@ contract Main{
         return booklist[num];
     }
     
-    /*
-    function BookInformation(uint256 num) public view returns(string memory name, uint256 status, uint256 left, uint256 reserved_num, uint256 borrow_year, uint256 borrow_month, uint256 borrow_day, uint256 return_year, uint256 return_month, uint256 return_day){
-        //uint256 borrow_year = 1970 + booklist[num].borrow_date / 1 years;
-        //uint256 borrow_year = 2020;
-        //uint256 borrow_month = booklist[num].borrow_date / 1;//month
-        //uint256 borrow_month = 7;
-        //uint256 borrow_day = 1 + booklist[num].borrow_date % 1 years / 1 days ;
-        uint256 borrow_day = 1 + booklist[num].borrow_date / 1 days - 18469 + 26;
-        //uint256 return_year = 1970 + booklist[num].return_date / 1 years;
-        //uint256 return_year = 2020;
-        //uint256 return_month = booklist[num].return_date / 1;//month
-        //uint256 return_month = 7;
-        uint256 return_day = 1 + booklist[num].return_date / 1 days - 18469 + 26;
-
-        if(borrow_day <= 31){
-            borrow_month = 1;
-        }
-        else(borrow_day <= 59){
-            borrow_month = 2;
-            borrow_day -= 31;
-        }
-        
-        //return (booklist[num].name, booklist[num].status, booklist[num].left, booklist[num].reserved_num, borrow_year, borrow_month, borrow_day, return_year, return_month, return_day);
-        return (booklist[num].name, booklist[num].status, booklist[num].left, booklist[num].reserved_num, 2020, 7, borrow_day, 2020, 7, return_day);
-    }
-    */
-    /*function BookInformation(uint256 num) public view returns(string memory name, uint256 status, uint256 left, uint256 reserved_num, uint256 year, uint256 month, uint256 day){
-        uint256 year = booklist[num].return_date.Year;
-        uint256 month = booklist[num].return_date.Month;
-        uint256 day = booklist[num].return_date.Day;
-        return (booklist[num].name, booklist[num].status, booklist[num].left, booklist[num].reserved_num, year, month, day);
-    }*/
     
     function UserInformation() public view returns(Student memory){
         uint256 num = students[msg.sender];
@@ -188,6 +150,25 @@ contract Main{
     function today() public view returns (uint256) {
         return block.timestamp / 1 days;
     }
+    
+    function foo(string memory str1, string memory str2) public view returns(string memory){
+        bytes memory strbyte1 = bytes(str1);
+        bytes memory strbyte2 = bytes(str2);
+
+        bytes memory str = new bytes(strbyte1.length + strbyte2.length);
+
+        uint8 point = 0;
+
+        for(uint8 j = 0; j < strbyte1.length;j++){
+            str[point] = strbyte1[j];
+            point++;
+        }
+        for(uint8 k = 0; k < strbyte2.length;k++){
+            str[point] = strbyte2[k];
+            point++;
+        }
+        return string(str);
+    }
 
     function update() public {
         uint256 stu = students[msg.sender];
@@ -198,16 +179,26 @@ contract Main{
             for(uint256 i = 0; i < studentlist[stu].borrowed_book.length; i++){ 
                 if(booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days < tod){ // 返却日を過ぎてる
                     //studentlist[stu].point -= (int)(tod - (booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days)) * 10;
-                    if(booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days < studentlist[stu].lastDay)
-                        studentlist[stu].point -= (int)(tod - studentlist[stu].lastDay) * 10;
-                    else
-                        studentlist[stu].point -= (int)(tod - (booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days)) * 10;
+                    int decPoint;
+                    if(booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days < studentlist[stu].lastDay) {
+                        decPoint = (int)(tod - studentlist[stu].lastDay) * 10;
+                    } else{
+                         decPoint = (int)(tod - (booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days)) * 10;
+                    }
+                    studentlist[stu].point -= decPoint;
+                    
+                    studentlist[stu].rec.push(Record(Date(2020, 7,27),-decPoint,foo(foo("「", booklist[studentlist[stu].borrowed_book[i]].name),"」延滞分")));
                 }
             }
-            if (studentlist[stu].point > 0) studentlist[stu].point++; // ログインボーナス
+            if (studentlist[stu].point > 0) {
+                studentlist[stu].point++; // ログインボーナス
+                studentlist[stu].rec.push(Record(Date(2020, 7,27),1,"ログインボーナス"));
+            }
             studentlist[stu].lastDay = tod;//最終更新日を更新
         }
     }
+    
+
 
     function return_point() public view returns (int256 point) {
         return studentlist[students[msg.sender]].point;
@@ -216,10 +207,13 @@ contract Main{
     function pay() public payable {//0.0000001ethで1ポイント回復
         //address payable lib = (address,payable)(0x5718bB3653623219e49609E355F4F60369F73cD3);
         //uint balance = gotten_point * 0.0000001;
+        require(msg.value >= 1000000000000000);
         int256 gotten_point = (int)(msg.value / 1000000000000000); // wei
 
         uint256 stu = students[msg.sender];
         studentlist[stu].point += gotten_point;
+        
+        studentlist[stu].rec.push(Record(Date(2020,7,24),gotten_point,"チャージ"));
     }
 
     function withdraw() public {
@@ -227,12 +221,66 @@ contract Main{
         msg.sender.transfer(address(this).balance);
     }
 
-    function search(string memory title) public view returns (Book memory){
-        //Book[] memory list;
-        for(uint256 i = 0; i < booklist.length; i++){
-           if(keccak256(abi.encodePacked(booklist[i].name)) == keccak256(abi.encodePacked((title)))) return booklist[i];
+    function search(string memory title) public view returns (Book[5] memory){
+        Book[5] memory list;
+        uint cnt = 0;
+        for(uint256 i = 0; i < booklist.length && cnt < 5; i++){
+           //if(keccak256(abi.encodePacked(booklist[i].name)) == keccak256(abi.encodePacked((title)))) return booklist[i];
+           if (KMPSearch(booklist[i].name, title)){
+               //list.push(booklist[i]);
+               //list[list.length] = booklist[i];
+               list[cnt] = booklist[i];
+               cnt += 1;
+           }
         }
+
+        return list;
+    }
+
+    function KMPSearch(string memory _target, string memory _pattern) public view returns (bool){
+        bytes memory target = bytes(_target);
+        bytes memory pattern = bytes(_pattern);
         
+        // ずらし表の作成
+        uint[100] memory table = CreateTable(pattern);
+
+        // 文字列探索
+        uint256 i = 0;
+        uint256 p = 0;
+        while (i < target.length && p < pattern.length) {
+            if (keccak256(abi.encodePacked(target[i])) == keccak256(abi.encodePacked(pattern[p]))) {
+                // 文字が一致していれば次の文字に進む
+                i++; p++;
+            }
+            else if (p == 0) { // パターン先頭文字が不一致の場合、次の文字
+                i++;
+            }
+            else { // 不一致の場合、パターンのどの位置から再開するか設定
+                p = table[p];
+            }
+        }
+        if (p == pattern.length) {
+            return true;
+        }
+        return false;
+    }
+
+    // ずらし表の生成
+    function CreateTable(bytes memory pattern) public view returns (uint[100] memory) {
+        uint[100] memory table;
+        table[0] = 0;
+
+        uint256 j = 0;
+        for (uint256 i = 1; i < pattern.length; i++){
+            if (keccak256(abi.encodePacked(pattern[i])) == keccak256(abi.encodePacked(pattern[j]))){
+                table[i] = j++;
+            }
+            else{
+                table[i] = j;
+                j = 0;
+            }
+        }
+        return table;
     }
 }
 
