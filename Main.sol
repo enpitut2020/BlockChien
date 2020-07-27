@@ -134,6 +134,7 @@ contract Main{
     function BookInformation(uint256 num) public view returns(Book memory) {
         return booklist[num];
     }
+    
     /*
     function BookInformation(uint256 num) public view returns(string memory name, uint256 status, uint256 left, uint256 reserved_num, uint256 borrow_year, uint256 borrow_month, uint256 borrow_day, uint256 return_year, uint256 return_month, uint256 return_day){
         //uint256 borrow_year = 1970 + booklist[num].borrow_date / 1 years;
@@ -191,12 +192,19 @@ contract Main{
             for(uint256 i = 0; i < studentlist[stu].borrowed_book.length; i++){ 
                 if(booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days < tod){ // 返却日を過ぎてる
                     //studentlist[stu].point -= (int)(tod - (booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days)) * 10;
-                    studentlist[stu].point -= (int)(tod - studentlist[stu].lastDay) * 10;
+                    if(booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days < studentlist[stu].lastDay)
+                        studentlist[stu].point -= (int)(tod - studentlist[stu].lastDay) * 10;
+                    else
+                        studentlist[stu].point -= (int)(tod - (booklist[studentlist[stu].borrowed_book[i]].return_date / 1 days)) * 10;
                 }
             }
             if (studentlist[stu].point > 0) studentlist[stu].point++; // ログインボーナス
             studentlist[stu].lastDay = tod;//最終更新日を更新
         }
+    }
+
+    function return_point() public view returns (int256 point) {
+        return studentlist[students[msg.sender]].point;
     }
 
     function pay() public payable {//0.0000001ethで1ポイント回復
