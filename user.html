@@ -26,7 +26,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
 
     <script src="ether.js"></script>
-    <script type="text/babel" src="react.js"></script>
+    <script type="text/babel" src="react.js">
+
+
+        
+
+
+    </script>
 </head>
 
 <body>
@@ -37,20 +43,6 @@
         </div>
     </div>
 
-    <!-- Search & Reservation -->
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-md">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="アドレス" id="usrAddress" name="username">
-                </div>
-            </div>
-            <div class="col-md">
-                <button type="submit" class="btn btn-primary" onclick="getUserInfo()">ログイン</button>
-            </div>
-        </div>
-    </div>
-    <!-- end -->
     <!-- User Address -->
     <div class="container mt-3">
         <div class="row">
@@ -97,7 +89,16 @@
                 </table>
             </div>
             <div id="reserve" class="container tab-pane fade"><br>
-
+                <table class="table">
+                    <thead class="thead-lignt">
+                        <tr>
+                            <th>タイトル</th>
+                            <th>予約人数</th>
+                            <th>受け取り日時</th>
+                            <th>返却期限</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
             <div id="menu2" class="container tab-pane fade"><br>
                 <h3>Menu 2</h3>
