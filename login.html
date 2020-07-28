@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>図書館貸し出しサービス</title>
+    <!-- import bootstrap4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+
+    <!-- import web3js -->
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.8/dist/web3.min.js"></script>
+
+    <!-- import React -->
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+
+    <script>
+        window.onload = function () {
+            let currentAccount = null;
+            const ethereumButton = document.getElementById('enableEthereumButton');
+
+            // ethereumButton.addEventListener('click', () => {
+            //     //Will Start the metamask extension
+            //     ethereum.request({ method: 'eth_requestAccounts' });
+            // });
+
+            ethereumButton.addEventListener('click', () => {
+                //Will Start the metamask extension
+                ethereum.request({ method: 'eth_requestAccounts' })
+                    .then(handleAccountsChanged)
+                    .catch((error) => {
+                        console.log("hoge.hoge.");
+                        if (error.code === 4001) {
+                            // EIP-1193 userRejectedRequest error
+                            console.log('Please connect to MetaMask.');
+                            document.getElementById("errMsg").className = "alert alert-danger";
+                            document.getElementById("error").innerText = "ログインに失敗しました。"
+
+                        } else {
+                            console.error(error);
+                        }
+                    });
+            });
+
+            function handleAccountsChanged(accounts) {
+
+                if (accounts.length === 0) {
+
+                    // MetaMask is locked or the user has not connected any accounts
+                    console.log('Please connect to MetaMask.');
+                    document.getElementById("errMsg").className = "alert alert-danger";
+                    document.getElementById("error").innerText = "ログインに失敗しました。"
+                    return;
+
+                } else if (accounts[0] !== currentAccount) {
+
+                    currentAccount = accounts[0]
+                    // Run any other necessary logic...
+                }
+
+                //jump
+                window.location.href = 'user.html'; // 通常の遷移
+                //window.open('パス名', '_blank'); // 新しいタブを開き、ページを表示
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>ぶろっくちえん</h1>
+            <p>次世代図書館</p>
+        </div>
+    </div>
+
+    <!-- Search & Reservation -->
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md">
+                <button id="enableEthereumButton" class="btn btn-primary">ログイン</button>
+                <div id="errMsg">
+                    <strong id="error"></strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
+    <!-- User Address -->
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="タイトル" id="usr" name="username">
+                </div>
+            </div>
+            <div class="col-md">
+                <button type="submit" class="btn btn-primary">検索</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

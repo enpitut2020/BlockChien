@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>図書館貸し出しサービス</title>
+    <!-- import bootstrap4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+
+    <!-- import web3js -->
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.2.8/dist/web3.min.js"></script>
+
+    <!-- import React -->
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.10.3/babel.min.js"></script>
+
+    <script src="ether.js"></script>
+    <script type="text/babel" src="react.js">
+
+
+    </script>
+
+    <style>
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>ぶろっくちえん</h1>
+            <p>次世代図書館</p>
+        </div>
+    </div>
+
+    <!-- User Address -->
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="タイトル" id="usr" name="username">
+                </div>
+            </div>
+            <div class="col-md">
+                <button type="submit" class="btn btn-primary">検索</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <!-- ポイント機能の実装 -->
+    <div class="container">
+
+        <div class="row-md">
+            <h6 id="point"></h6>
+
+
+            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="ポイントを受け取る"
+                data-placement="right" onClick="getPoint()">ボーナス受け取り</button>
+            <br>
+            <button type="button" class="btn btn-outline-success btn-sm" title="課金でポイントを回復できます" data-placement="right"
+                data-toggle="collapse" data-target="#demo">ポイント回復</button>
+
+            <div id="demo" class="collapse">
+                <br>
+                <h6>課金でポイントを回復できます！※時間経過でも回復します！</h6>
+                <br>
+                <div class="row">
+                    <button type="button" class="btn btn-danger btn-circle" onClick="minusPoint()">-</button>
+                    <div class="col-sm-2"><input type="text" class="form-control" placeholder="何ポイント回復する？" id="recPoint" value="0">
+                    </div>
+                    <button type="button" class="btn btn-success btn-circle" onClick="plusPoint()">+</button>
+                    <div class="col-md"><button type="button" class="btn btn-primary"
+                            onClick="recoveryPoint()">回復</button></div>
+
+                </div>
+
+            </div>
+            <br>
+            <!-- Nav pills -->
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#home">履歴</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#reserve">予約リスト</a>
+                </li>
+            </ul>
+            <br>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="home" class="container tab-pane active"><br>
+                    <table class="table">
+                        <thead class="thead-lignt">
+                            <tr>
+                                <th>タイトル</th>
+                                <th>予約人数</th>
+                                <th>貸し出し日時</th>
+                                <th>返却期限</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="reserve" class="container tab-pane fade"><br>
+                    <table class="table">
+                        <thead class="thead-lignt">
+                            <tr>
+                                <th>タイトル</th>
+                                <th>予約人数</th>
+                                <th>受け取り日時</th>
+                                <th>返却期限</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="menu2" class="container tab-pane fade"><br>
+                    <h3>Menu 2</h3>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+                        totam rem aperiam.</p>
+                </div>
+            </div>
+        </div>
+        <div id="root"></div>
+        <!-- end -->
