@@ -29,10 +29,57 @@
     <script type="text/babel" src="react.js">
 
 
-        
-
-
     </script>
+
+    <style>
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+
+
+
+        .slidecontainer {
+            width: 100%;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 25px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -56,56 +103,78 @@
             </div>
         </div>
     </div>
-
+    <br>
+    <!-- ポイント機能の実装 -->
     <div class="container">
-        <h6 id="point"></h6>
 
-        <br>
-        <!-- Nav pills -->
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="pill" href="#home">履歴</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="pill" href="#reserve">予約リスト</a>
-            </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" data-toggle="pill" href="#menu2">Menu 2</a>
-            </li> -->
-        </ul>
+        <div class="row-md">
+            <h6 id="point"></h6>
 
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div id="home" class="container tab-pane active"><br>
-                <table class="table">
-                    <thead class="thead-lignt">
-                        <tr>
-                            <th>タイトル</th>
-                            <th>予約人数</th>
-                            <th>貸し出し日時</th>
-                            <th>返却期限</th>
-                        </tr>
-                    </thead>
-                </table>
+            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="ポイントを受け取る"
+                data-placement="right" onClick="getPoint()">ボーナス受け取り</button>
+            <br>
+            <button type="button" class="btn btn-outline-success btn-sm" title="課金でポイントを回復できます" data-placement="right"
+                data-toggle="collapse" data-target="#demo">ポイント回復</button>
+
+            <div id="demo" class="collapse">
+                <br>
+                <h6>課金でポイントを回復できます！※時間経過でも回復します！</h6>
+                <br>
+                <div class="row">
+                    <button type="button" class="btn btn-danger btn-circle" onClick="minusPoint()">-</button>
+                    <div class="col-sm-2"><input type="text" class="form-control" placeholder="何ポイント回復する？" id="recPoint"
+                            value="0">
+                    </div>
+                    <button type="button" class="btn btn-success btn-circle" onClick="plusPoint()">+</button>
+                    <div class="col-md"><button type="button" class="btn btn-primary"
+                            onClick="recoveryPoint()">回復</button></div>
+
+                </div>
+
             </div>
-            <div id="reserve" class="container tab-pane fade"><br>
-                <table class="table">
-                    <thead class="thead-lignt">
-                        <tr>
-                            <th>タイトル</th>
-                            <th>予約人数</th>
-                            <th>受け取り日時</th>
-                            <th>返却期限</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div id="menu2" class="container tab-pane fade"><br>
-                <h3>Menu 2</h3>
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                    totam rem aperiam.</p>
+            <br>
+            <!-- Nav pills -->
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#home">履歴</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#reserve">予約リスト</a>
+                </li>
+            </ul>
+            <br>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div id="home" class="container tab-pane active"><br>
+                    <table class="table">
+                        <thead class="thead-lignt">
+                            <tr>
+                                <th>タイトル</th>
+                                <th>予約人数</th>
+                                <th>貸し出し日時</th>
+                                <th>返却期限</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="reserve" class="container tab-pane fade"><br>
+                    <table class="table">
+                        <thead class="thead-lignt">
+                            <tr>
+                                <th>タイトル</th>
+                                <th>予約人数</th>
+                                <th>受け取り日時</th>
+                                <th>返却期限</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="menu2" class="container tab-pane fade"><br>
+                    <h3>Menu 2</h3>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+                        totam rem aperiam.</p>
+                </div>
             </div>
         </div>
-    </div>
-    <div id="root"></div>
-    <!-- end -->
+        <div id="root"></div>
+        <!-- end -->
