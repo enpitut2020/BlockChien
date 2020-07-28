@@ -24,11 +24,11 @@ contract Main{
         Date Rdate;
     }
 
-    struct Record{
-        Date date;
-        int point;
-        string explanation;
-    }
+    // struct Record{
+    //     Date date;
+    //     int point;
+    //     string explanation;
+    // }
 
     struct Student{
         address User;
@@ -38,7 +38,7 @@ contract Main{
         uint256[] borrowed_book; //固有番号 貸し出し履歴
         uint256[] reserved_book; //固有番号　予約リスト
         uint256 lastDay; // 最終更新日
-        Record[] rec;
+        //Record[] rec;
     }
 
     Book[] booklist;//index:固有番号
@@ -82,16 +82,16 @@ contract Main{
                             address(0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A),//金
                             address(0xaf4a4BA302A069dF4ffDDdEc73A8957580747462)];//発表
         string[6] memory member_name = ["図書館","及川","XU KAIWEN","菊地","金","発表"];
-        Record[] memory rec;
+        //Record[] memory rec;
         for (uint i = 0; i < member.length; i++) {
-            studentlist.push(Student(member[i], 1111111*(i+1), member_name[i], P, a, a, today()-1,rec));
+            studentlist.push(Student(member[i], 1111111*(i+1), member_name[i], P, a, a, today()-1));
             for(uint256 j = 8; j < 12; j++){
                 studentlist[i].borrowed_book.push(j);
             }
             for(uint256 j = 4; j < 8; j++){
                 studentlist[i].reserved_book.push(j);
             }
-            studentlist[i].rec.push(Record(Date(2020, 7, 27), 10, "初期ポイント"));
+            //studentlist[i].rec.push(Record(Date(2020, 7, 27), 10, "初期ポイント"));
             students[member[i]] = i;
         }
         // studentlist.push(Student(oikawa, 1111111, "A", P, a, a, today()));
@@ -187,12 +187,12 @@ contract Main{
                     }
                     studentlist[stu].point -= decPoint;
                     
-                    studentlist[stu].rec.push(Record(Date(2020, 7,27),-decPoint,foo(foo("「", booklist[studentlist[stu].borrowed_book[i]].name),"」延滞分")));
+                    //studentlist[stu].rec.push(Record(Date(2020, 7,27),-decPoint,foo(foo("「", booklist[studentlist[stu].borrowed_book[i]].name),"」延滞分")));
                 }
             }
             if (studentlist[stu].point > 0) {
                 studentlist[stu].point++; // ログインボーナス
-                studentlist[stu].rec.push(Record(Date(2020, 7,27),1,"ログインボーナス"));
+                //studentlist[stu].rec.push(Record(Date(2020, 7,27),1,"ログインボーナス"));
             }
             studentlist[stu].lastDay = tod;//最終更新日を更新
         }
@@ -213,7 +213,7 @@ contract Main{
         uint256 stu = students[msg.sender];
         studentlist[stu].point += gotten_point;
         
-        studentlist[stu].rec.push(Record(Date(2020,7,24),gotten_point,"チャージ"));
+        //studentlist[stu].rec.push(Record(Date(2020,7,24),gotten_point,"チャージ"));
     }
 
     function withdraw() public {
