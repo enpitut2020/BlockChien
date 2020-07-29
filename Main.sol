@@ -59,13 +59,13 @@ contract Main{
             for (uint i = 0; i < 8; i++) {
                 Date memory borrow_d = Date(2020, 7, 27);
                 Date memory return_d = Date(2020, 8, 10);
-                booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 2 days,block.timestamp,friend,borrow_d,return_d));
+                booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 2 days,block.timestamp + 12 days,friend,borrow_d,return_d));
                 //title_search[book_name[i]] = i;
             }//18469(2020/7/26)
             for (uint i = 8; i < 16; i++) {
                 Date memory borrow_d = Date(2020, 7, 14);
                 Date memory return_d = Date(2020, 7, 28);
-                booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 2 days,block.timestamp - 3 days,friend,borrow_d,return_d));
+                booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 15 days,block.timestamp - 1 days,friend,borrow_d,return_d));
                 //title_search[book_name[i]] = i;
             }
              /*booklist.push(Book(nouser,0,"BlockChain",0,1,6,100,Date(2020,7,24),friend));
