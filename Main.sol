@@ -58,13 +58,13 @@ contract Main{
             uint256[] memory friend;
             for (uint i = 0; i < 8; i++) {
                 Date memory borrow_d = Date(2020, 7, 24);
-                Date memory return_d = Date(2020, 7, 26);
+                Date memory return_d = Date(2020, 8, 10);
                 booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 2 days,block.timestamp,friend,borrow_d,return_d));
                 //title_search[book_name[i]] = i;
             }//18469(2020/7/26)
             for (uint i = 8; i < 16; i++) {
                 Date memory borrow_d = Date(2020, 7, 24);
-                Date memory return_d = Date(2020, 7, 25);
+                Date memory return_d = Date(2020, 7, 28);
                 booklist.push(Book(nouser,i,book_name[i],0,1,random(10,i),random(400,i),block.timestamp - 2 days,block.timestamp - 3 days,friend,borrow_d,return_d));
                 //title_search[book_name[i]] = i;
             }
@@ -86,9 +86,15 @@ contract Main{
         //Record[] memory rec;
         for (uint i = 0; i < member.length; i++) {
             studentlist.push(Student(member[i], 1111111*(i+1), member_name[i], P, a, a, today()-1));
+            /*
             for(uint256 j = 8; j < 12; j++){
                 studentlist[i].borrowed_book.push(j);
             }
+            */
+            studentlist[i].borrowed_book.push(10);
+            studentlist[i].borrowed_book.push(15);
+            studentlist[i].borrowed_book.push(0);
+            studentlist[i].borrowed_book.push(3);
             for(uint256 j = 4; j < 8; j++){
                 studentlist[i].reserved_book.push(j);
             }
