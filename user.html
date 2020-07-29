@@ -95,14 +95,30 @@
         <div class="row">
             <div class="col-md">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="タイトル" id="usr" name="username">
+                    <input type="text" class="form-control" placeholder="タイトル" id="title">
                 </div>
             </div>
             <div class="col-md">
-                <button type="submit" class="btn btn-primary">検索</button>
+                <button id="search" type="submit" class="btn btn-primary" onclick="searchBook()">検索</button>
             </div>
         </div>
     </div>
+
+    <div id="pomp">
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
     <br>
     <!-- ポイント機能の実装 -->
     <div class="container">
@@ -175,11 +191,6 @@
                             </tr>
                         </thead>
                     </table>
-                </div>
-                <div id="menu2" class="container tab-pane fade"><br>
-                    <h3>Menu 2</h3>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                        totam rem aperiam.</p>
                 </div>
             </div>
         </div>

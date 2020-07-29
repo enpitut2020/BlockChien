@@ -201,5 +201,62 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
+function searchBook() {
+    if (document.getElementById("title").value == "") {
+        return;
+    }
+    mainContract.methods.search(document.getElementById("title").value).call({ from: currentAccount }).then(res => {
+        console.log(res)
+        console.log(document.getElementById("title").value);
+        let books = [];
+        res.map((e, n) => {
+            if (e[2] == "") {
+                books.push("\u00A0")
+            }
+            else {
+                books.push(e[2]);
+            }
+        });
+        let ele = (
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+
+                        <div class="modal-header">
+                            <h4 class="modal-title">検索結果　※デモです</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td>{books[0]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{books[1]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{books[2]}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        );
+        ReactDOM.render(ele, document.getElementById('pomp'));
+        $("#myModal").modal();
+
+    })
+}
 
 

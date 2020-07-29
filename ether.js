@@ -1,14 +1,14 @@
 const accounts = ethereum.request({ method: 'eth_requestAccounts' });
 const ethEnabled = () => {
-    if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        window.ethereum.enable();
-        return true;
-    }
-    return false;
+	if (window.ethereum) {
+		window.web3 = new Web3(window.ethereum);
+		window.ethereum.enable();
+		return true;
+	}
+	return false;
 }
 if (ethEnabled()) {
-    console.log("true");
+	console.log("true");
 }
 
 let mainContract = new window.web3.eth.Contract([
@@ -465,52 +465,52 @@ let mainContract = new window.web3.eth.Contract([
 ], "0xb2D3454BD557a35DB20d8EdedBD1bB05EFC5feC3");
 
 function Borrow() {
-    let title = Borrow_form.textbox.value;  //テキストエリアの値を取得
-    if (title == "") { alert("借りる本のタイトルを入力してください。"); }
-    else { alert("" + "(" + title + ")" + "を借ります。"); }
+	let title = Borrow_form.textbox.value;  //テキストエリアの値を取得
+	if (title == "") { alert("借りる本のタイトルを入力してください。"); }
+	else { alert("" + "(" + title + ")" + "を借ります。"); }
 
-    // sendだと
-    mainContract.methods.borrowBook(title).call({
-        from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
-    }).then(function (receipt) {
-        console.log(receipt);
-    });
+	// sendだと
+	mainContract.methods.borrowBook(title).call({
+		from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
+	}).then(function (receipt) {
+		console.log(receipt);
+	});
 }
 
 function ReturnBook() {
-    let title = Return_form.textbox.value;  //テキストエリアの値を取得
-    if (title == "") { alert("返す本のタイトルを入力してください。"); }
-    else { alert("" + "(" + title + ")" + "を返します。"); }
+	let title = Return_form.textbox.value;  //テキストエリアの値を取得
+	if (title == "") { alert("返す本のタイトルを入力してください。"); }
+	else { alert("" + "(" + title + ")" + "を返します。"); }
 
-    mainContract.methods.returnBook(title).send({
-        from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
-    }).then(function (receipt) {
-        console.log(receipt);
-    });
+	mainContract.methods.returnBook(title).send({
+		from: "0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A",
+	}).then(function (receipt) {
+		console.log(receipt);
+	});
 }
 
 function getPoint() {
-    // update()を実行してポイントを変更
-    mainContract.methods.update().send({ from: currentAccount }).then(
-        () => {
-            // return_pointを実行してポイントを取得
-            mainContract.methods.return_point().call({ from: currentAccount })
-                .then((point) => {
-                    // ReapoRender
-                    document.getElementById('point').innerText = "ポイント残高: " + point + "\u00A0\u00A0\u00A0(ポイント受け取り済み)";
-                }
-                )
-        }
-    )
+	// update()を実行してポイントを変更
+	mainContract.methods.update().send({ from: currentAccount }).then(
+		() => {
+			// return_pointを実行してポイントを取得
+			mainContract.methods.return_point().call({ from: currentAccount })
+				.then((point) => {
+					// ReapoRender
+					document.getElementById('point').innerText = "ポイント残高: " + point + "\u00A0\u00A0\u00A0(ポイント受け取り済み)";
+				}
+				)
+		}
+	)
 }
 
 const pointWeight = 1000000000000000; // 1ポイントあたりのwei
 
 function recoveryPoint() {
-    // ダミーポイント
-    //let recPoints = 10;
+	// ダミーポイント
+	//let recPoints = 10;
 	let recPoints = Number(document.getElementById('recPoint').value);
-	if(recPoints > 0) {
+	if (recPoints > 0) {
 		// ポイント <-> Ether の変換
 		// 1e15 wei で 1ポイント
 		mainContract.methods.pay().send({
@@ -531,9 +531,11 @@ function recoveryPoint() {
 }
 
 function plusPoint() {
-    $("#recPoint").val(Number($("#recPoint").val()) + 5);
+	$("#recPoint").val(Number($("#recPoint").val()) + 5);
 }
 
 function minusPoint() {
-    $("#recPoint").val(Math.max(Number($("#recPoint").val()) - 5, 0));
+	$("#recPoint").val(Math.max(Number($("#recPoint").val()) - 5, 0));
 }
+
+
