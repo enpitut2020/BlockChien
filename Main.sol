@@ -91,8 +91,8 @@ contract Main{
                 studentlist[i].borrowed_book.push(j);
             }
             */
-            studentlist[i].borrowed_book.push(3);
-            studentlist[i].borrowed_book.push(0);
+            studentlist[i].borrowed_book.push(6);
+            studentlist[i].borrowed_book.push(4);
             studentlist[i].borrowed_book.push(15);
             studentlist[i].borrowed_book.push(10);
             for(uint256 j = 4; j < 8; j++){
