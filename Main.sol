@@ -75,13 +75,14 @@ contract Main{
              
         uint256[] memory a;
         
-        address[6] memory member = [lib,//(図書館)
+        address[7] memory member = [lib,//(図書館)
                             address(0xAbf977caE05A77D85577d58fE03D19639849ea01),//(及川)
                             address(0x324bAF512Ffc6f37D91F9fE3F3464a7eA792AaeF),//(XU KAIWEN)
                             address(0xEd8e2574FA50244c5bE1e1b4c58892e3ad0FcBFa),//(菊地)
                             address(0xc8eDA6054Eb36457dad52C7E734CD282e2a3575A),//金
-                            address(0xaf4a4BA302A069dF4ffDDdEc73A8957580747462)];//発表
-        string[6] memory member_name = ["図書館","及川","XU KAIWEN","菊地","金","発表"];
+                            address(0xaf4a4BA302A069dF4ffDDdEc73A8957580747462),//発表
+                            address(0xf7e2F21898232ebB57F280D31Dc004153f5681EE)];//発表
+        string[7] memory member_name = ["図書館","及川","XU KAIWEN","菊地","金","発表","発表"];
         //Record[] memory rec;
         for (uint i = 0; i < member.length; i++) {
             studentlist.push(Student(member[i], 1111111*(i+1), member_name[i], P, a, a, today()-1));
