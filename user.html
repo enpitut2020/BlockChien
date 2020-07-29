@@ -111,23 +111,30 @@
             <h6 id="point"></h6>
 
             <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" title="ポイントを受け取る"
-                data-placement="right" onClick="getPoint()">ボーナス受け取り</button>
-            <br>
+                data-placement="bottom" onClick="getPoint()">ボーナス受け取り</button>
             <button type="button" class="btn btn-outline-success btn-sm" title="課金でポイントを回復できます" data-placement="right"
                 data-toggle="collapse" data-target="#demo">ポイント回復</button>
-
+            <br>
             <div id="demo" class="collapse">
                 <br>
                 <h6>課金でポイントを回復できます！※時間経過でも回復します！</h6>
                 <br>
-                <div class="row">
-                    <button type="button" class="btn btn-danger btn-circle" onClick="minusPoint()">-</button>
-                    <div class="col-sm-2"><input type="text" class="form-control" placeholder="何ポイント回復する？" id="recPoint"
-                            value="0">
+                <div class="row-md">
+
+
+                    <div class="form-inline">
+                        <button type="button" class="btn btn-danger btn-circle" onClick="minusPoint()">-</button>
+                        <span>&nbsp;</span>
+                        <input type="text" class="form-control col-sm-1" placeholder="何ポイント回復する？" id="recPoint"
+                            value="0" style="text-align: center">
+                        <span>&nbsp;</span>
+                        <button type="button" class="btn btn-success btn-circle" onClick="plusPoint()">+</button>
+                        <span>&nbsp; &nbsp;</span>
+                        <button type="button" class="btn btn-primary" onClick="recoveryPoint()">回復</button>
                     </div>
-                    <button type="button" class="btn btn-success btn-circle" onClick="plusPoint()">+</button>
-                    <div class="col-md"><button type="button" class="btn btn-primary"
-                            onClick="recoveryPoint()">回復</button></div>
+
+
+
 
                 </div>
 

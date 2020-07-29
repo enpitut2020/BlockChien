@@ -24,10 +24,10 @@ web3.eth.getAccounts((error, accounts) => {
                         "year": book["Rdate"]["Year"],
                         "month": book["Rdate"]["Month"],
                         "day": book["Rdate"]["Day"],
-                    }
+                    },
+                    "pages": book["pages"]
                 });
-                return book;
-            }).then((book) => {
+            }).then(() => {
                 if (borrowedBookHistory.length == res["borrowed_book"].length) {
                     console.log(borrowedBookHistory);
                     let historyRecords = borrowedBookHistory.map((n, cnt) => {
@@ -80,27 +80,38 @@ web3.eth.getAccounts((error, accounts) => {
                         slider1.id = "myRange1";
                         slider1.value = 0;
                         slider1.min = 0;
-                        slider1.max = book["pages"];
+                        slider1.max = n.pages;
                         let slider2 = document.createElement('input');
                         slider2.type = "range";
                         slider2.className = "slider";
                         slider2.id = "myRange2";
+
+                        // 経過時間の計算
+                        let targetDate = new Date(n.end.year, n.end.month - 1, n.end.day);
+                        let dnumTarget = targetDate.getTime();
+                        let nowDate = new Date();
+                        let dnumNow = nowDate.getTime();
+                        let diffMSec = dnumTarget - dnumNow;
+                        let diffDays = diffMSec / (1000 * 60 * 60 * 24);
+                        diffDays = Math.ceil(diffDays);
+
+
+                        //diffDays = Math.abs(diffDays);
+
                         slider2.value = 0;
                         slider2.min = 0;
-                        slider2.max = book["pages"];
+                        slider2.max = n.pages;
 
                         let span1 = document.createElement('span');
                         let wrapP1 = document.createElement('p');
                         wrapP1.innerText = "読んだページ数: ";
                         let span2 = document.createElement('span');
                         let wrapP2 = document.createElement('p');
-                        wrapP2.innerText = "読んでおかないといけないページ数: ";
+                        wrapP2.innerText = "今日読まないといけないページ数: ";
                         span1.id = "demo1_" + String(cnt);
                         span2.id = "demo2_" + String(cnt);
                         wrapP1.appendChild(span1);
                         wrapP2.appendChild(span2);
-
-
 
                         let ele = document.getElementById(String(cnt));
                         let wrapTr = document.createElement('tr');
@@ -114,40 +125,22 @@ web3.eth.getAccounts((error, accounts) => {
                         wrapDiv.appendChild(wrapP2);
                         wrapTh.appendChild(wrapDiv);
                         wrapTr.appendChild(wrapTh);
-
+                        let sp = document.createElement('span');
+                        sp.innerHTML = "&nbsp;"
+                        wrapDiv.appendChild(sp);
                         ele.insertAdjacentElement('afterend', wrapTr);
 
                         span1.innerHTML = slider1.value;
+                        span2.innerHTML = Math.max(Math.ceil((n.pages - slider1.value) / diffDays), 0);
+                        slider2.value = span2.innerHTML;
+                        // sliderが動かない様にする。
+                        slider2.disabled = true;
                         slider1.oninput = () => {
                             span1.innerHTML = slider1.value;
-                        }
-
-                        span2.innerHTML = slider2.value;
-                        slider2.oninput = () => {
+                            slider2.value = Math.max(Math.ceil((n.pages - slider1.value) / diffDays), 0);
                             span2.innerHTML = slider2.value;
                         }
                     })
-
-                    // let slider1 = document.getElementById("myRange1");
-                    // let output1 = document.getElementById("demo1");
-                    // output1.innerHTML = slider1.value;
-
-                    // slider1.oninput = function () {
-                    //     output1.innerHTML = this.value;
-                    // }
-
-                    // let slider2 = document.getElementById("myRange2");
-                    // let output2 = document.getElementById("demo2");
-                    // output2.innerHTML = slider2.value;
-
-                    // slider2.oninput = function () {
-                    //     output2.innerHTML = this.value;
-                    // }
-
-
-
-
-
                 }
             }))
         }, Promise.resolve());
@@ -178,8 +171,8 @@ web3.eth.getAccounts((error, accounts) => {
                                 <th>{n.title}</th>
                                 <th>{String(n.reservedNum) + "人"}</th>
                                 <th>{String(n.begin.year) + "年" + String(n.begin.month) + "月" + String(n.begin.day) + "日"}</th>
-                                <th>{String(n.end.year) + "年" + String(n.end.month) + "月" + String(n.end.day) + "日"}</th>
                             </tr>
+
                         );
                     });
                     console.log(historyRecords);
@@ -191,7 +184,6 @@ web3.eth.getAccounts((error, accounts) => {
                                     <th>タイトル</th>
                                     <th>予約人数</th>
                                     <th>受け取り日時</th>
-                                    <th>返却期限</th>
                                 </tr>
                             </thead>
                             {historyRecords}
@@ -209,6 +201,5 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
-window.onload = () => {
 
-}
+

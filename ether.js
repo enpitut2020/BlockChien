@@ -1,5 +1,3 @@
-//const { func } = require("prop-types");
-
 const accounts = ethereum.request({ method: 'eth_requestAccounts' });
 const ethEnabled = () => {
     if (window.ethereum) {
@@ -464,10 +462,7 @@ let mainContract = new window.web3.eth.Contract([
 		"stateMutability": "view",
 		"type": "function"
 	}
-], "0xF3DBD2b872Ad9146987aD6d3D4F30f7190743cC5");
-
-
-
+], "0xb2D3454BD557a35DB20d8EdedBD1bB05EFC5feC3");
 
 function Borrow() {
     let title = Borrow_form.textbox.value;  //テキストエリアの値を取得
@@ -520,7 +515,7 @@ function recoveryPoint() {
 		// 1e15 wei で 1ポイント
 		mainContract.methods.pay().send({
 			from: currentAccount,
-			to: "0x1a4931Ad581f421f88AceBf6387F97a62EC73C1a",
+			to: "0xb2D3454BD557a35DB20d8EdedBD1bB05EFC5feC3",
 			value: pointWeight * recPoints //wei
 		}).then(() => {
 			mainContract.methods.return_point().call({ from: currentAccount })
@@ -542,4 +537,3 @@ function plusPoint() {
 function minusPoint() {
     $("#recPoint").val(Math.max(Number($("#recPoint").val()) - 5, 0));
 }
-
