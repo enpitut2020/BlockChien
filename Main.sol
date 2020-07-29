@@ -48,7 +48,7 @@ contract Main{
     address lib = address(0xfbE00a15070cdF61B86098e651f053655292b424);
 
     function random(uint256 num, uint seed) private view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.timestamp, seed)))%num;
+        return uint256(keccak256(abi.encodePacked(block.timestamp, seed)))%(num-1) + 1;
    }
 
     constructor () public {
